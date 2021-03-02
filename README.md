@@ -1,12 +1,9 @@
-<h1 align="center">React & Tailwind Image Gallery
-</h1>
+# React & Tailwind Image Gallery
 
-<div align="center">
-  <h3>
-    <a href="https://react-bootstrap-github-jobs.netlify.app/" target="_blank">
-      Demo Link
-    </a>
-  </h3>
-</div>
+> In this project I integrated Tailwind CSS with React and built an image gallery app with the Pixabay API
 
-<p>
+## [App Demo](https://react-tailwind-image-gallery.netlify.app/)
+---
+
+## Screenshots
+![Example screenshot](https://i.imgur.com/EmCILym.png)
