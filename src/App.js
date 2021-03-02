@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react"
+import ImageCard from "./components/ImageCard"
+import ImageSearch from "./components/ImageSearch"
 
 function App() {
   const [images, setImages] = useState([])
@@ -10,43 +12,32 @@ function App() {
   const url = `${cors}https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${term}&image_type=photo&pretty=true`
 
   useEffect(() => {
-    console.log(process.env.REACT_APP_PIXABAY_API_KEY)
     fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        setImages(data.hits)
+        setIsLoading(false)
+      })
       .catch((error) => console.log(error))
-  }, [])
+  }, [term, url])
 
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg">
-      <img src="https://source.unsplash.com/random" alt="stock random" />
-      <div className="px-6 py-4">
-        <div className="font-bold text-gray-800 text-xl mb-2">
-          Photo by Bill Landing
+    <div className="container p-2 mx-auto">
+      <ImageSearch searchText={(text) => setTerm(text)} />
+
+      {!isLoading && images.length === 0 && (
+        <h1 className="text-6xl text-center mx-auto mt-32">No Images Found</h1>
+      )}
+
+      {isLoading ? (
+        <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {images.map((image) => {
+            return <ImageCard key={image.id} image={image} />
+          })}
         </div>
-        <ul>
-          <li>
-            <strong>Views: </strong>4000
-          </li>
-          <li>
-            <strong>Downloads: </strong>330
-          </li>
-          <li>
-            <strong>Likes: </strong>475
-          </li>
-        </ul>
-      </div>
-      <div className="px-6 py-4">
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-          #tag1
-        </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-          #tag2
-        </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-          #tag3
-        </span>
-      </div>
+      )}
     </div>
   )
 }
